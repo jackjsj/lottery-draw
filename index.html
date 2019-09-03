@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>抽奖</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="./src/css/index.css" />
+    <!-- 插件css -->
+    <script
+      type="text/javascript"
+      src="./src/libs/jquery-3.2.1.min.js"
+    ></script>
+    <!-- 插件js -->
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- MAIN -->
+      <div class="main">
+        <!-- 说明 -->
+        <div class="info">
+          <div class="info-desc">
+            <p>机器人型号：普通机器人</p>
+            <p>今日产生收益（钻石）：36</p>
+            <p>预计本月收益：90</p>
+          </div>
+          <div class="info-question">
+            <p>?</p>
+          </div>
+        </div>
+        <!-- 抢单-->
+        <div class="order-scramble">
+          <div class="outer-ring">
+            <div class="middle-ring">
+              <div class="inner-ring">
+                <p class="f02">预计12分钟完成</p>
+                <p class="f06">正在抢单</p>
+                <p class="f04">00:09:52</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 抽奖 -->
+        <div class="lottery-draw">
+          <div class="outer-wrapper">
+            <div class="inner-wrapper">
+              <div id="lottery-pool" class="pool">
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="draw-btn-group">
+                  <div class="draw-btn one-draw" id="one-draw-btn"></div>
+                  <div class="draw-btn ten-draws" id="ten-draw-btn"></div>
+                </div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+                <div class="prize-item"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 当前钻石 -->
+        <div class="current-val">
+          <p>当前钻石：<span>1988</span>个</p>
+        </div>
+      </div>
+      <!-- TAB BAR -->
+      <div class="tab-bar">
+        <div class="tab-item">
+          <div>
+            <img class="tab-icon" src="./src/img/hall_a.png" />
+          </div>
+          <span>大厅</span>
+        </div>
+        <div class="tab-item">
+          <div>
+            <img class="tab-icon" src="./src/img/ist_b.png" />
+          </div>
+          <span>榜单</span>
+        </div>
+        <div class="tab-item center-tab">
+          <div>
+            <img class="center-tab center-tab-icon" src="./src/img/robot.png" />
+          </div>
+        </div>
+        <div class="tab-item">
+          <div>
+            <img class="tab-icon" src="./src/img/message_b.png" />
+          </div>
+          <span>消息</span>
+        </div>
+        <div class="tab-item active">
+          <div>
+            <img class="tab-icon" src="./src/img/mine_b.png" />
+          </div>
+          <span>我的</span>
+        </div>
+      </div>
+    </div>
+    <script src="./src/es5/index.js"></script>
+  </body>
+</html>
