@@ -9,6 +9,7 @@
     />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
     <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" href="./src/css/animate.css" />
     <link rel="stylesheet" href="./src/css/index.css" />
     <!-- 插件css -->
     <script
@@ -25,7 +26,7 @@
         <!-- 说明 -->
         <div class="info">
           <div class="info-desc">
-            <p>机器人型号：普通机器人</p>
+            <p>机器人型号：普通机器人<span class="update-robot-btn">我要升级</span></p>
             <p>今日产生收益（钻石）：36</p>
             <p>预计本月收益：90</p>
           </div>
@@ -37,10 +38,8 @@
         <div class="order-scramble">
           <div class="outer-ring">
             <div class="middle-ring">
-              <div class="inner-ring">
-                <p class="f02">预计12分钟完成</p>
-                <p class="f06">正在抢单</p>
-                <p class="f04">00:09:52</p>
+              <div class="inner-ring" id="order-scramble-btn">
+                <p class="f06">开始抢单</p>
               </div>
             </div>
           </div>
@@ -69,12 +68,26 @@
                 <div class="prize-item"></div>
                 <div class="prize-item"></div>
               </div>
+              <div
+                class="animated bounceIn result-panel faster"
+                id="lottery-result-panel"
+              ></div>
             </div>
           </div>
         </div>
         <!-- 当前钻石 -->
         <div class="current-val">
           <p>当前钻石：<span>1988</span>个</p>
+        </div>
+        <!-- 抽奖说明 -->
+        <div class="draw-desc">
+          <p class="draw-desc-title">抽奖说明：</p>
+          <div class="f03 draw-desc-content">
+            <p>1、购买机器人必须绑定支付宝实名；</<p>
+            <p>2、38个初级机器人碎片合成奖品普通机器人（1月）；</<p>
+            <p>3、活动解释权归平台所有；</<p>
+            <p>4、抽中高级机器人、超级机器人，必须是用户拥有前置等级机器人，否则不予生效；（必须先有普通机器人，高级机器人即是生效）</<p>
+          </div>
         </div>
       </div>
       <!-- TAB BAR -->

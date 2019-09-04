@@ -1,4 +1,11 @@
+// 模拟请求数据
 const imgPath = './src/img/prizes/';
+/**
+ * 说明：
+ * prizes中的数组顺序是div的顺序，即从左往右，从上往下的依次列出
+ * 而对象中的index是以左上为第一个div的顺时针的顺序
+ * 必须严格按这个顺序生成数组以及index值
+ */
 const prizes = [
   {
     index: 1,
@@ -71,57 +78,187 @@ const prizes = [
     img: imgPath + '2days.png',
   },
 ];
-const orders = [1, 2, 3, 4, 5, 6, 6, 13, 7, 12, 11, 10, 9, 8];
+
 // 一次抽奖的时长
 const periodPerDraw = 5000;
+// 奖品类目数
+const prizeNum = prizes.length;
+// 计算时间差
+function diff2Hms(diff) {
+  //计算出小时数
+  const h = Math.floor(diff / (3600 * 1000))
+    .toString()
+    .padStart(2, 0);
+  //计算相差分钟数
+  const leave1 = diff % (3600 * 1000); //计算小时后剩余的毫秒数
+  const m = Math.floor(leave1 / (60 * 1000))
+    .toString()
+    .padStart(2, 0);
+  //计算相差秒数
+  const leave2 = leave1 % (60 * 1000); //计算分钟数后剩余的毫秒数
+  const s = Math.round(leave2 / 1000)
+    .toString()
+    .padStart(2, 0);
+  return { h, m, s };
+}
 
 $(function() {
   const $prizeItems = $('.prize-item');
   $prizeItems.each(function(i, item) {
     $(item).html(
-      `<img src="${prizes[i].img}"><p class="img-mask" data-index="${prizes[i].index}"></p>`
+      `<img class="prize-img" data-index="${prizes[i].index}" src="${prizes[i].img}"><p class="img-mask" data-index="${prizes[i].index}"></p>`
     );
   });
-
-  function drawOne() {
-    // 清除状态
-    $('.img-mask').removeClass('active blink');
-    //请求接口，获取序号, 这里模拟
-    const resultNum = parseInt(Math.random() * orders.length) || 1;
-    console.log(resultNum);
-    let current = parseInt(Math.random() * orders.length) || 1;
-    function roll() {
-      const $cur = $(`.img-mask[data-index=${current}]`);
-      current = current + 1;
-      if (current > orders.length) {
-        current = 1;
-      }
-      $cur.toggleClass('active');
-      setTimeout(function() {
-        $cur.toggleClass('active');
-      }, 100);
-    }
-    let interval = setInterval(roll, 50);
-    setTimeout(function() {
-      clearInterval(interval);
-      if (current === resultNum) roll();
-      interval = setInterval(function() {
-        roll();
-        if (current === resultNum) {
-          clearInterval(interval);
-          const $cur = $(`.img-mask[data-index=${current}]`);
-          $cur.addClass('active blink');
+  // 当前抽奖状态 false:待抽奖 | true: 抽奖中
+  let drawState = false;
+  // 当前抢单状态 false:待抢单 | true: 正在抢单
+  let scrambleState = false;
+  /**
+   * 抽1次
+   * @param {Number} resultNum 最终抽中的序号
+   */
+  function drawOne(resultNum) {
+    return new Promise(function(resolve, reject) {
+      // 随机抽奖起始序号
+      let current = parseInt(Math.random() * prizeNum) || 1;
+      function roll() {
+        const $cur = $(`.img-mask[data-index=${current}]`);
+        current = current + 1;
+        if (current > prizeNum) {
+          current = 1;
         }
-      }, 111);
-      $('#one-draw-btn').one('click', drawOne);
-    }, periodPerDraw);
+        $cur.addClass('active');
+        setTimeout(function() {
+          $cur.removeClass('active');
+        }, 100);
+      }
+      let interval = setInterval(roll, 50); //50ms 更换一次光圈位置，顺时针转动
+      setTimeout(function() {
+        // periodPerDraw 后停止转动
+        clearInterval(interval);
+        if (current === resultNum) roll();
+        interval = setInterval(function() {
+          roll();
+          if (current === resultNum) {
+            clearInterval(interval);
+            const $cur = $(`.img-mask[data-index=${resultNum}]`);
+            $cur.addClass('highlight blink');
+            setTimeout(function() {
+              resolve({
+                resultNum,
+              });
+            }, 1200);
+          }
+        }, 100);
+      }, periodPerDraw);
+    });
   }
-  function drawTen() {
-    console.log('drawTen');
-    $('#ten-draw-btn').one('click', drawTen);
+  /**
+   * 抽10次
+   * @param {Array} resultNums 最终抽中的序号集合
+   */
+  async function drawTen(resultNums) {
+    const results = [];
+    for (let i of resultNums) {
+      const { resultNum } = await drawOne(i);
+      results.push(resultNum);
+    }
+    //显示抽奖结果
+    const $lotterResultPanel = $('#lottery-result-panel');
+    let html = '<div class="result-prize-wrapper">';
+    results.forEach(function(item) {
+      const imgSrc = $(`.prize-img[data-index=${item}]`).attr('src');
+      html += `<img class="result-prize-img" src="${imgSrc}">`;
+    });
+    html += '</div>';
+    $lotterResultPanel.html(html);
+    $lotterResultPanel.removeClass('zoomOut').show();
+    $('body').one('click', function() {
+      $('#lottery-result-panel').addClass('zoomOut');
+      setTimeout(function() {
+        $lotterResultPanel.hide();
+      }, 800);
+    });
+    drawState = false; // 抽奖结束
+    console.log(results);
   }
 
-  $('#one-draw-btn').one('click', drawOne);
-  $('#ten-draw-btn').one('click', drawTen);
-  // console.log($prizeItems);
+  // 抽1次按钮点击事件
+  $('#one-draw-btn').on('click', function() {
+    if (drawState) {
+      //处于抽奖中状态，不可抽奖
+      return;
+    }
+    // 初始状态
+    $('.img-mask').removeClass('highlight active blink');
+    drawState = true;
+    //请求接口，获取序号, 这里模拟
+    const resultNum = parseInt(Math.random() * prizeNum) || 1;
+    console.log('抽中的奖品序号为：' + resultNum);
+    drawOne(resultNum).then(function(e) {
+      //抽完后执行回调
+      //显示抽奖结果
+      const imgSrc = $(`.prize-img[data-index=${e.resultNum}]`).attr('src');
+      const $lotterResultPanel = $('#lottery-result-panel');
+      $lotterResultPanel.html(
+        `<div class="result-prize-wrapper"><img src="${imgSrc}"></div>`
+      );
+      $lotterResultPanel.removeClass('zoomOut').show();
+      $('body').one('click', function() {
+        $('#lottery-result-panel').addClass('zoomOut');
+        setTimeout(function() {
+          $lotterResultPanel.hide();
+        }, 800);
+      });
+      drawState = false; // 抽奖结束
+    });
+  });
+
+  // 抽10次按钮点击事件
+  $('#ten-draw-btn').on('click', function() {
+    if (drawState) {
+      //处于抽奖中状态，不可抽奖
+      return;
+    }
+    // 初始状态
+    $('.img-mask').removeClass('highlight active blink');
+    drawState = true;
+    //请求接口，获取序号数组, 这里模拟
+    const resultNums = new Array(10)
+      .fill()
+      .map((item) => parseInt(Math.random() * prizeNum) || 1);
+    console.log('抽中的奖品序号为：' + resultNums.join(','));
+    drawTen(resultNums);
+  });
+
+  // 抢单按钮点击
+  $('#order-scramble-btn').on('click', function() {
+    if (this.scrambleState) {
+      return;
+    }
+    this.scrambleState = true;
+    // 获取结束时间
+    const endTime = Date.now() + (Math.random() * 30 + 1) * 60 * 1000; // 模拟
+    // 计算与当前时间的差值
+    let diff = endTime - Date.now();
+    console.log(diff);
+    let hms = diff2Hms(diff);
+    console.log(hms);
+    let html = `<p class="f02">预计${Number(hms.h) * 60 +
+      Number(hms.m)}分钟完成</p>
+    <p class="f06">正在抢单</p>
+    <p class="f04" id="scramble-countdown">${hms.h}:${hms.m}:${hms.s}</p>`;
+    $('#order-scramble-btn').html(html);
+    let countDownInt = setInterval(function() {
+      diff = endTime - Date.now();
+      hms = diff2Hms(diff);
+      if (diff > 0) {
+        $('#scramble-countdown').html(`${hms.h}:${hms.m}:${hms.s}`);
+      } else {
+        clearInterval(countDownInt);
+        $('#order-scramble-btn').html(`<p class="f06">开始抢单</p>`);
+        this.scrambleState = false;
+      }
+    }, 1000);
+  });
 });
