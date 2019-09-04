@@ -147,7 +147,7 @@ $(function() {
               resolve({
                 resultNum,
               });
-            }, 1200);
+            }, 300);
           }
         }, 100);
       }, periodPerDraw);
@@ -159,9 +159,11 @@ $(function() {
    */
   async function drawTen(resultNums) {
     const results = [];
+    const { resultNum } = await drawOne(resultNums[0]);
     for (let i of resultNums) {
-      const { resultNum } = await drawOne(i);
-      results.push(resultNum);
+      const $cur = $(`.img-mask[data-index=${i}]`);
+      $cur.addClass('highlight blink');
+      results.push(i);
     }
     //显示抽奖结果
     const $lotterResultPanel = $('#lottery-result-panel');
@@ -174,6 +176,7 @@ $(function() {
     $lotterResultPanel.html(html);
     $lotterResultPanel.removeClass('zoomOut').show();
     $('body').one('click', function() {
+      $('.img-mask').removeClass('highlight active blink');
       $('#lottery-result-panel').addClass('zoomOut');
       setTimeout(function() {
         $lotterResultPanel.hide();
@@ -205,6 +208,7 @@ $(function() {
       );
       $lotterResultPanel.removeClass('zoomOut').show();
       $('body').one('click', function() {
+        $('.img-mask').removeClass('highlight active blink');
         $('#lottery-result-panel').addClass('zoomOut');
         setTimeout(function() {
           $lotterResultPanel.hide();

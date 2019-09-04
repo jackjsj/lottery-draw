@@ -136,6 +136,7 @@ html,body{
   margin:auto;
 }
 .inner-wrapper{
+  position:relative;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -224,7 +225,6 @@ html,body{
 	border-radius: 0.3rem;
 	border: solid 1px #ffffff;
   animation-duration: .5s;
-  animation-delay: .3s;
 }
 .result-prize-wrapper{
   height:100%;
