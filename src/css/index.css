@@ -230,10 +230,26 @@ html, body {
   border: solid 1px #ffffff; }
 
 .pool {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-row-gap: 0.1rem;
-  grid-column-gap: 0.2rem; }
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around; }
+
+.pool-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 @-webkit-keyframes blink {
   0% {
@@ -288,15 +304,14 @@ html, body {
                 animation: blink .3s linear 3; }
 
 .draw-btn-group {
-  grid-column: 2 / 5;
-  grid-row: 2 / 4; }
-
-.draw-btn-group {
+  position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }

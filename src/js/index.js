@@ -1,11 +1,5 @@
 // 模拟请求数据
 const imgPath = './src/img/prizes/';
-/**
- * 说明：
- * prizes中的数组顺序是div的顺序，即从左往右，从上往下的依次列出
- * 而对象中的index是以左上为第一个div的顺时针的顺序
- * 必须严格按这个顺序生成数组以及index值
- */
 const prizes = [
   {
     index: 1,
@@ -33,27 +27,27 @@ const prizes = [
     img: imgPath + 'x6.png',
   },
   {
-    index: 14,
+    index: 6,
     desc: '夺宝券2张',
     img: imgPath + '2tickets.png',
   },
   {
-    index: 6,
+    index: 7,
     desc: '8个钻石',
     img: imgPath + 'x8.png',
   },
   {
-    index: 13,
+    index: 8,
     desc: '1个月超级机器人',
     img: imgPath + 'super.png',
   },
   {
-    index: 7,
+    index: 9,
     desc: '88个钻石',
     img: imgPath + 'x88.png',
   },
   {
-    index: 12,
+    index: 10,
     desc: '1个月高级机器人',
     img: imgPath + 'high-level.png',
   },
@@ -63,22 +57,22 @@ const prizes = [
     img: imgPath + 'fragment.png',
   },
   {
-    index: 10,
+    index: 12,
     desc: '1个月机器人',
     img: imgPath + '1month.png',
   },
   {
-    index: 9,
+    index: 13,
     desc: '3天机器人',
     img: imgPath + '3days.png',
   },
   {
-    index: 8,
+    index: 14,
     desc: '2天机器人',
     img: imgPath + '2days.png',
   },
 ];
-
+const orders = [1, 2, 3, 4, 5, 7, 9, 14, 13, 12, 11, 10, 8, 6];
 // 一次抽奖的时长
 const periodPerDraw = 5000;
 // 奖品类目数
@@ -106,7 +100,9 @@ $(function() {
   const $prizeItems = $('.prize-item');
   $prizeItems.each(function(i, item) {
     $(item).html(
-      `<img class="prize-img" data-index="${prizes[i].index}" src="${prizes[i].img}"><p class="img-mask" data-index="${prizes[i].index}"></p>`
+      `<img class="prize-img" data-index="${i + 1}" src="${
+        prizes[i].img
+      }"><p class="img-mask" data-index="${i + 1}"></p>`
     );
   });
   // 当前抽奖状态 false:待抽奖 | true: 抽奖中
@@ -123,10 +119,13 @@ $(function() {
       let current = parseInt(Math.random() * prizeNum) || 1;
       function roll() {
         const $cur = $(`.img-mask[data-index=${current}]`);
-        current = current + 1;
-        if (current > prizeNum) {
-          current = 1;
+        // 找到current在orders中的索引，获取索引加1的值
+        let curOrderIndex = orders.indexOf(current);
+        curOrderIndex = curOrderIndex + 1;
+        if (curOrderIndex > prizeNum - 1) {
+          curOrderIndex = 0;
         }
+        current = orders[curOrderIndex];
         $cur.addClass('active');
         setTimeout(function() {
           $cur.removeClass('active');
