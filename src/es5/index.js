@@ -133,58 +133,29 @@ $(function () {
    * 抽10次
    * @param {Array} resultNums 最终抽中的序号集合
    */
-  async function drawTen(resultNums) {
-    var results = [];
-
-    var _ref = await drawOne(resultNums[0]),
-        resultNum = _ref.resultNum;
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = resultNums[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var i = _step.value;
-
-        var $cur = $('.img-mask[data-index=' + i + ']');
-        $cur.addClass('highlight blink');
-        results.push(i);
-      }
+  function drawTen(resultNums) {
+    drawOne(resultNums[0]).then(function () {
       //显示抽奖结果
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
-    var $lotterResultPanel = $('#lottery-result-panel');
-    var html = '<div class="result-prize-wrapper">';
-    results.forEach(function (item) {
-      var imgSrc = $('.prize-img[data-index=' + item + ']').attr('src');
-      html += '<img class="result-prize-img" src="' + imgSrc + '">';
+      var $lotterResultPanel = $('#lottery-result-panel');
+      var html = '<div class="result-prize-wrapper">';
+      resultNums.forEach(function (item) {
+        var $cur = $('.img-mask[data-index=' + item + ']');
+        $cur.addClass('highlight blink');
+        var imgSrc = $('.prize-img[data-index=' + item + ']').attr('src');
+        html += '<img class="result-prize-img" src="' + imgSrc + '">';
+      });
+      html += '</div>';
+      $lotterResultPanel.html(html);
+      $lotterResultPanel.removeClass('zoomOut').show();
+      $('body').one('click', function () {
+        $('.img-mask').removeClass('highlight active blink');
+        $('#lottery-result-panel').addClass('zoomOut');
+        setTimeout(function () {
+          $lotterResultPanel.hide();
+        }, 800);
+      });
+      drawState = false; // 抽奖结束
     });
-    html += '</div>';
-    $lotterResultPanel.html(html);
-    $lotterResultPanel.removeClass('zoomOut').show();
-    $('body').one('click', function () {
-      $('.img-mask').removeClass('highlight active blink');
-      $('#lottery-result-panel').addClass('zoomOut');
-      setTimeout(function () {
-        $lotterResultPanel.hide();
-      }, 800);
-    });
-    drawState = false; // 抽奖结束
-    console.log(results);
   }
 
   // 抽1次按钮点击事件

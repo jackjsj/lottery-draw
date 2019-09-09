@@ -167,7 +167,6 @@ html,body{
   position: relative;
   width: 1.5rem;
   height: 1.1rem;
-  justify-self:center;
   background:url('../img/prize-bg.png') no-repeat;
   background-size: cover;
   img{
@@ -198,10 +197,11 @@ html,body{
 }
 .draw-btn-group{
   position: absolute;
+  top:50%;
+  left:50%;
+  margin-left:-2.3rem;
+  margin-top:-0.9rem;
   display:flex;
-  width:100%;
-  justify-content: center;
-  align-items: center;
 }
 .draw-btn{
 	width: 2.3rem;

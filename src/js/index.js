@@ -156,33 +156,29 @@ $(function() {
    * 抽10次
    * @param {Array} resultNums 最终抽中的序号集合
    */
-  async function drawTen(resultNums) {
-    const results = [];
-    const { resultNum } = await drawOne(resultNums[0]);
-    for (let i of resultNums) {
-      const $cur = $(`.img-mask[data-index=${i}]`);
-      $cur.addClass('highlight blink');
-      results.push(i);
-    }
-    //显示抽奖结果
-    const $lotterResultPanel = $('#lottery-result-panel');
-    let html = '<div class="result-prize-wrapper">';
-    results.forEach(function(item) {
-      const imgSrc = $(`.prize-img[data-index=${item}]`).attr('src');
-      html += `<img class="result-prize-img" src="${imgSrc}">`;
+  function drawTen(resultNums) {
+    drawOne(resultNums[0]).then(function() {
+      //显示抽奖结果
+      const $lotterResultPanel = $('#lottery-result-panel');
+      let html = '<div class="result-prize-wrapper">';
+      resultNums.forEach(function(item) {
+        const $cur = $(`.img-mask[data-index=${item}]`);
+        $cur.addClass('highlight blink');
+        const imgSrc = $(`.prize-img[data-index=${item}]`).attr('src');
+        html += `<img class="result-prize-img" src="${imgSrc}">`;
+      });
+      html += '</div>';
+      $lotterResultPanel.html(html);
+      $lotterResultPanel.removeClass('zoomOut').show();
+      $('body').one('click', function() {
+        $('.img-mask').removeClass('highlight active blink');
+        $('#lottery-result-panel').addClass('zoomOut');
+        setTimeout(function() {
+          $lotterResultPanel.hide();
+        }, 800);
+      });
+      drawState = false; // 抽奖结束
     });
-    html += '</div>';
-    $lotterResultPanel.html(html);
-    $lotterResultPanel.removeClass('zoomOut').show();
-    $('body').one('click', function() {
-      $('.img-mask').removeClass('highlight active blink');
-      $('#lottery-result-panel').addClass('zoomOut');
-      setTimeout(function() {
-        $lotterResultPanel.hide();
-      }, 800);
-    });
-    drawState = false; // 抽奖结束
-    console.log(results);
   }
 
   // 抽1次按钮点击事件
