@@ -11,6 +11,7 @@
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="./src/css/animate.css" />
     <link rel="stylesheet" href="./src/css/index.css" />
+    <link rel="stylesheet" href="./src/css/special.css" />
     <!-- 插件css -->
     <script
       type="text/javascript"
@@ -26,7 +27,11 @@
         <!-- 说明 -->
         <div class="info">
           <div class="info-desc">
-            <p>机器人型号：普通机器人<span class="update-robot-btn">我要升级</span></p>
+            <p>
+              机器人型号：普通机器人<span class="update-robot-btn"
+                >我要升级</span
+              >
+            </p>
             <p>今日产生收益（钻石）：36</p>
             <p>预计本月收益：90</p>
           </div>
@@ -40,6 +45,37 @@
             <div class="middle-ring">
               <div class="inner-ring" id="order-scramble-btn">
                 <p class="f06">开始抢单</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 特殊转盘-->
+        <div class="special-part rel">
+          <div class="special-part-content flex-col jcc h100">
+            <p class="f03 cbk tc">
+              各等级转盘只需抽满100次可获得更高级的<span class="mc-red f04 b"
+                >幸运奖励！</span
+              >
+            </p>
+            <p class="flex jcfe">
+              <span class="mc-blue">当前转盘幸运值：</span
+              ><span class="mc-red f03 b">28</span>
+              <span class="special-draw-btn" id="specialBtn">特殊转盘>></span>
+            </p>
+          </div>
+          <div
+            class="animated bounceIn special-draw-popup faster"
+            id="special-draw-popup"
+          >
+            <div class="flex-col aic jca h100">
+              <p class="f05 mc-yellow">幸运值：<span id="luckyValue">98</span></p>
+              <!-- 奖池 -->
+              <div id="special-pool" class="flex jcb">
+
+              </div>
+              <!-- 开始按钮 -->
+              <div class="start-btn">
+                <img src="./src/img/start.png" />
               </div>
             </div>
           </div>
@@ -64,8 +100,8 @@
                 </div>
                 <!-- 第三排 -->
                 <div class="pool-row">
-                    <div class="prize-item"></div>
-                    <div class="prize-item"></div>
+                  <div class="prize-item"></div>
+                  <div class="prize-item"></div>
                 </div>
                 <!-- 第四排 -->
                 <div class="pool-row">
@@ -95,10 +131,12 @@
         <div class="draw-desc">
           <p class="draw-desc-title">抽奖说明：</p>
           <div class="f03 draw-desc-content">
-            <p>1、购买机器人必须绑定支付宝实名；</<p>
-            <p>2、38个初级机器人碎片合成奖品普通机器人（1月）；</<p>
-            <p>3、活动解释权归平台所有；</<p>
-            <p>4、抽中高级机器人、超级机器人，必须是用户拥有前置等级机器人，否则不予生效；（必须先有普通机器人，高级机器人即是生效）</<p>
+            <p>1、购买机器人必须绑定支付宝实名；</p>
+            <p>2、38个初级机器人碎片合成奖品普通机器人（1月）；</p>
+            <p>3、活动解释权归平台所有；</p>
+            <p>
+              4、抽中高级机器人、超级机器人，必须是用户拥有前置等级机器人，否则不予生效；（必须先有普通机器人，高级机器人即是生效）
+            </p>
           </div>
         </div>
       </div>
@@ -136,5 +174,6 @@
       </div>
     </div>
     <script src="./src/es5/index.js"></script>
+    <script src="./src/es5/special.js"></script>
   </body>
 </html>
