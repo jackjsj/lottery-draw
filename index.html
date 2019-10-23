@@ -68,14 +68,24 @@
             id="special-draw-popup"
           >
             <div class="flex-col aic jca h100">
-              <p class="f05 mc-yellow">幸运值：<span id="luckyValue">98</span></p>
+              <p class="f05 mc-yellow">
+                幸运值：<span id="luckyValue">98</span>
+              </p>
               <!-- 奖池 -->
-              <div id="special-pool" class="flex jcb">
-
-              </div>
+              <div id="special-pool" class="flex jcb"></div>
               <!-- 开始按钮 -->
               <div class="start-btn">
                 <img src="./src/img/start.png" />
+              </div>
+              <!-- 结果弹窗 -->
+              <div
+                class="animated bounceIn special-draw-result-popup faster abs"
+                id="special-draw-result-popup-wrapper"
+              >
+                <div
+                  class="flex aic jcc h100"
+                  id="special-draw-result-popup"
+                ></div>
               </div>
             </div>
           </div>

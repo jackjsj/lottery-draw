@@ -125,3 +125,23 @@
 .jca{
   justify-content: space-around;
 }
+.ma{
+  margin:auto;
+}
+.special-draw-result-popup{
+  display: none;
+  height:80%;
+  width:80%;
+  border:1px solid #fff;
+  background-color: rgba(62, 69, 186, 0.9);
+  border-radius: 0.3rem;
+  z-index: 100;
+  box-sizing: border-box;
+}
+.special-pool-item-num{
+  position: absolute;
+  top:0.01rem;
+  right:0.2rem;
+  font-size:0.1rem;
+  color:#fff;
+}

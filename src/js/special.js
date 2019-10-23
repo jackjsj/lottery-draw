@@ -9,9 +9,10 @@ $(document).ready(() => {
     const html = prizes
       .map(
         (item, i) =>
-          `<div class="special-pool-item">
+          `<div class="special-pool-item rel">
             <img src="${item.img}" data-index="${i + 1}">
             <p class="img-mask" data-index="${i + 1}"></p>
+            <p class="special-pool-item-num">x${item.num}</p>
           </div>`
       )
       .join('');
@@ -31,6 +32,9 @@ $(document).ready(() => {
     $popup.removeClass('zoomOut').show();
     $('body').one('click', function() {
       $popup.addClass('zoomOut');
+      $('#special-draw-result-popup-wrapper')
+        .addClass('zoomOut')
+        .hide();
       setTimeout(function() {
         $popup.hide();
       }, 100);
@@ -47,15 +51,15 @@ $(document).ready(() => {
     let left2Right = true;
     function roll() {
       const $cur = $(`#special-pool .img-mask[data-index=${current}]`);
-      if(left2Right){
+      if (left2Right) {
         current = current + 1;
-      }else{
+      } else {
         current = current - 1;
       }
       if (current > 3) {
         left2Right = false;
       }
-      if(current < 2){
+      if (current < 2) {
         left2Right = true;
       }
       $cur.addClass('active');
@@ -75,9 +79,27 @@ $(document).ready(() => {
           $cur.addClass('highlight blink');
           specialDrawState = false; // 关闭抽奖状态
           console.log('抽中的序号为：' + resultNum);
+          // 再弹一个窗口
+          showResultPanel(resultNum);
         }
       }, 100);
     }, periodPerDraw); // periodPerDraw秒后停止转动
+  }
+
+  // 显示结果弹窗
+  function showResultPanel(resultNum) {
+    // 渲染中奖结果
+    const targetItem = specialPrizes[resultNum - 1];
+    const $wrapper = $('#special-draw-result-popup-wrapper');
+    const $resultPopup = $('#special-draw-result-popup');
+    $resultPopup.html(
+      `<div class="special-pool-item">
+        <img src="${targetItem.img}" data-index="${resultNum}">
+        <p class="img-mask" data-index="${resultNum}"></p>
+        <p class="special-pool-item-num">x${targetItem.num}</p>
+      </div>`
+    );
+    $wrapper.removeClass('zoomOut').show();
   }
 
   // 模拟特殊奖池数据
@@ -86,22 +108,26 @@ $(document).ready(() => {
     {
       index: 1,
       desc: '10个钻石',
-      img: imgPath + 'x10.png',
+      img: imgPath + 'sample.png',
+      num: 10,
     },
     {
       index: 2,
       desc: '1000个钻石',
-      img: imgPath + 'x1000.png',
+      img: imgPath + 'sample.png',
+      num: 1000,
     },
     {
       index: 3,
       desc: '2000个钻石',
-      img: imgPath + 'x2000.png',
+      img: imgPath + 'sample.png',
+      num: 2000,
     },
     {
       index: 4,
       desc: '10000个钻石',
-      img: imgPath + 'x10000.png',
+      img: imgPath + 'sample.png',
+      num: 10000,
     },
   ];
 
